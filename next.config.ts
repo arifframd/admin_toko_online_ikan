@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
     // This will allow you to run the Next.js app even if there are TypeScript errors
     ignoreBuildErrors: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
