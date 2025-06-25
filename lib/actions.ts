@@ -1,6 +1,6 @@
 "use server";
 
-import { EditProductProps, TransactionProps } from ".";
+import { TransactionProps } from ".";
 import { Product } from "./models/products";
 import { Transaction } from "./models/transactions";
 import { connectDB } from "./mongodb";
@@ -80,7 +80,7 @@ export const createTransaction = async ({ order_id, imageUrl, product_name, name
 
 export const orderByMonth = async () => {
   try {
-    const res = await fetch(`/api/orders/monthly`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/monthly`);
     const data = await res.json();
     return data;
   } catch (err) {

@@ -1,8 +1,9 @@
 "use client";
-import { getAllOrders, orderByMonth } from "@/lib/actions";
+import { getAllOrders, handlePrint, orderByMonth } from "@/lib/actions";
 import React, { useEffect, useState } from "react";
 import Category from "./MonthCategory";
 import { TransactionProps } from "@/lib";
+import { Button } from "./ui/button";
 
 const OrderList = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("Semua");
@@ -23,19 +24,20 @@ const OrderList = () => {
     fetchOrders();
   }, []);
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   const filteredOrders = selectedCategory === "Semua" ? orders : ordersByMonth.find((order) => order.month === selectedCategory)?.orders || [];
 
   return (
     <div className="p-6">
       <div className="overflow-x-auto rounded-lg shadow">
         <h1 className="text-2xl font-semibold mb-4">Daftar Order</h1>
-        <div className="mb-6 flex justify-end lg:mx-9">
+        <div className="mb-6 flex justify-end lg:mx-9 gap-5">
+          <Button onClick={handlePrint}>Cetak PDF</Button>
           <h1 className="text-[18px] text-gray-600 font-semibold mr-4">Bulan: </h1>
           <Category selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-        </div>
-
-        <div id="pdf-table" style={{ visibility: "hidden", height: 0, overflow: "hidden" }}>
-          <div style={{ backgroundColor: "#ffffff", color: "#000", padding: "20px" }}>Tes PDF Berhasil</div>
         </div>
 
         <table className="min-w-full text-sm text-left border border-gray-200">

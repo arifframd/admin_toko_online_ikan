@@ -1,18 +1,33 @@
 import { createTransaction } from "@/lib/actions";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const Midtrans = require("midtrans-client");
 
-// Handle POST
-export async function POST(req: NextResponse) {
+// Ganti dengan env pas production
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN!;
+
+// OPTIONS preflight
+export const OPTIONS = async () => {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  });
+};
+
+// 👉 Handle POST
+export async function POST(req: NextRequest) {
   try {
     const { id, quantity, price, imageUrl, productName, nameBuyer, email, phone, address, city, postalCode } = await req.json();
+
     const totalPrice = price * quantity;
     const fullName = nameBuyer;
     const nameParts = fullName.trim().split(" ");
-
     const first_name = nameParts[0];
-    const last_name = nameParts.slice(1).join(" "); // Kalau ada lebih dari dua kata
+    const last_name = nameParts.slice(1).join(" ");
 
     console.log("🔍 Received payload:", { id, quantity, price, productName });
 
@@ -35,21 +50,30 @@ export async function POST(req: NextResponse) {
         },
       ],
       customer_details: {
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        phone: phone,
+        first_name,
+        last_name,
+        email,
+        phone,
         shipping_address: {
-          address: address,
-          city: city,
+          address,
+          city,
           postal_code: postalCode,
         },
       },
     };
 
     const transaction = await snap.createTransaction(parameter);
-    // Simpan data produk yang ingin dibeli
-    await createTransaction({ order_id: id, imageUrl: imageUrl, product_name: productName, name: fullName, total: totalPrice, quantity, address });
+
+    await createTransaction({
+      order_id: id,
+      imageUrl,
+      product_name: productName,
+      name: fullName,
+      total: totalPrice,
+      quantity,
+      address,
+    });
+
     console.log("✅ Transaction created:", transaction);
 
     return NextResponse.json(
@@ -59,11 +83,15 @@ export async function POST(req: NextResponse) {
       },
       {
         status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
       }
     );
   } catch (error) {
     console.error("❌ Transaction error:", error);
-
     return NextResponse.json(
       {
         message: "Transaction failed",
@@ -71,6 +99,11 @@ export async function POST(req: NextResponse) {
       },
       {
         status: 500,
+        headers: {
+          "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
       }
     );
   }

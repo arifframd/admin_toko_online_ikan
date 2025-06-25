@@ -3,7 +3,21 @@ import { connectDB } from "@/lib/mongodb";
 import { Types } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
-// Harus dikonfig dlu untuk melewati cors origin
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN!; // bisa ganti pakai env kalau mau
+
+// OPTIONS preflight handler
+export const OPTIONS = async () => {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  });
+};
+
+// POST handler cart
 export const POST = async (req: NextRequest) => {
   await connectDB();
   try {
@@ -25,7 +39,15 @@ export const POST = async (req: NextRequest) => {
         ],
       });
       await cart.save();
-      return NextResponse.json({ status: "SUCCESS", message: "Berhasil membuat dan menambahkan cart" }, { status: 201 });
+      return NextResponse.json(
+        { status: "SUCCESS", message: "Berhasil membuat dan menambahkan cart" },
+        {
+          status: 201,
+          headers: {
+            "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+          },
+        }
+      );
     } else {
       const existingProduct = cart.products.find((p) => p.productId.toString() === product._id);
 
@@ -47,7 +69,12 @@ export const POST = async (req: NextRequest) => {
           message: "Berhasil menambahkan produk ke cart",
           status: "SUCCESS",
         },
-        { status: 201 }
+        {
+          status: 201,
+          headers: {
+            "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+          },
+        }
       );
     }
   } catch (err) {
@@ -59,6 +86,9 @@ export const POST = async (req: NextRequest) => {
       },
       {
         status: 500,
+        headers: {
+          "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+        },
       }
     );
   }
