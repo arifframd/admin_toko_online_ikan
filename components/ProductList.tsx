@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 const ProductList = ({ products }: { products: Product[] }) => {
   const [productList, setProductList] = useState(products || []);
+  console.log("Initial product list:", productList);
 
   const handleDelete = (id: string) => {
     setProductList((prev) => prev.filter((p) => p._id !== id));

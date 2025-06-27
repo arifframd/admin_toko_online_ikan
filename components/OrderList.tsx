@@ -1,5 +1,5 @@
 "use client";
-import { getAllOrders, handlePrint, orderByMonth } from "@/lib/actions";
+import { getAllOrders, orderByMonth } from "@/lib/actions";
 import React, { useEffect, useState } from "react";
 import Category from "./MonthCategory";
 import { TransactionProps } from "@/lib";

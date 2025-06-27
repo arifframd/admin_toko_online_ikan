@@ -97,3 +97,14 @@ export const getAllOrders = async () => {
     console.log("Error saat mengambil data all orders", err);
   }
 };
+
+export const getAllProducts = async () => {
+  try {
+    const allProduct = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
+    const { data } = await allProduct.json();
+    return data;
+  } catch (err) {
+    console.log("Error saat mengambil data all products", err);
+    return [];
+  }
+};

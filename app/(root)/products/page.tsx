@@ -1,16 +1,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { connectDB } from "@/lib/mongodb";
-import { Product } from "@/lib/models/products";
 import ProductList from "@/components/ProductList";
+import { getAllProducts } from "@/lib/actions";
 
 export default async function ProductsPage() {
-  // connect ke database
-  await connectDB();
-
   // ambil semua produk dari database
-  const products = JSON.parse(JSON.stringify(await Product.find()));
+  const products = await getAllProducts();
+  console.log("Fetched products:", products);
 
   return (
     <div className="container mx-auto mt-10 px-4 md:px-6">
