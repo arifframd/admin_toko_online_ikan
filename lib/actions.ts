@@ -100,7 +100,7 @@ export const getAllOrders = async () => {
 
 export const getAllProducts = async () => {
   try {
-    const allProduct = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
+    const allProduct = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, { cache: "no-store" });
     const { data } = await allProduct.json();
     return data;
   } catch (err) {
