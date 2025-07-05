@@ -35,7 +35,7 @@ export const POST = async (req: NextRequest) => {
     }
     console.log("Stok produk setelah update:", stok.stock);
     // kirim notifikasi ke admin
-    notifyAdmin({
+    await notifyAdmin({
       name: updateStatus.name,
       productName: updateStatus.product_name,
       quantity: updateStatus.quantity,
