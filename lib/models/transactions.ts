@@ -2,38 +2,29 @@ import mongoose, { Schema } from "mongoose";
 
 const transactionSchema = new Schema(
   {
-    order_id: {
-      type: String,
-      require: true,
-    },
-    imageUrl: {
-      type: String,
-      required: true,
-    },
-    product_name: {
-      type: String,
-      require: true,
-    },
-    name: {
-      type: String,
-      require: true,
-    },
-    quantity: {
-      type: Number,
-      require: true,
-    },
-    total: {
-      type: Number,
-      require: true,
-    },
-    address: {
-      type: String,
-      require: true,
-    },
+    order_id: String,
+    products: [
+      {
+        product_id: String,
+        product_name: String,
+        imageUrl: String,
+        quantity: Number,
+        price: Number,
+        subtotal: Number,
+      },
+    ],
+    name: String,
+    email: String,
+    phone: Number,
+    address: String,
+    city: String,
+    postalCode: String,
+    total: Number,
     status: {
       type: String,
       default: "Pending",
     },
+    isProcessed: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

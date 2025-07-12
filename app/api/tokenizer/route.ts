@@ -21,15 +21,23 @@ export const OPTIONS = async () => {
 // 👉 Handle POST
 export async function POST(req: NextRequest) {
   try {
-    const { id, quantity, price, imageUrl, productName, nameBuyer, email, phone, address, city, postalCode } = await req.json();
+    const { id, nameBuyer, email, phone, address, city, postalCode, products } = await req.json();
 
-    const totalPrice = price * quantity;
+    const total = products.reduce((acc: any, item: any) => acc + item.price * item.quantity, 0);
+
+    const item_details = products.map((item: any) => ({
+      id: item.product_id,
+      name: item.product_name,
+      price: item.price,
+      quantity: item.quantity,
+      subtotal: item.price * item.quantity,
+    }));
     const fullName = nameBuyer;
     const nameParts = fullName.trim().split(" ");
     const first_name = nameParts[0];
     const last_name = nameParts.slice(1).join(" ");
 
-    console.log("🔍 Received payload:", { id, quantity, price, productName });
+    console.log("🔍 Received payload:", { id, item_details });
 
     const snap = new Midtrans.Snap({
       isProduction: false,
@@ -39,16 +47,9 @@ export async function POST(req: NextRequest) {
     const parameter = {
       transaction_details: {
         order_id: id,
-        gross_amount: totalPrice,
+        gross_amount: total,
       },
-      item_details: [
-        {
-          id,
-          name: productName,
-          price,
-          quantity,
-        },
-      ],
+      item_details,
       customer_details: {
         first_name,
         last_name,
@@ -66,12 +67,14 @@ export async function POST(req: NextRequest) {
 
     await createTransaction({
       order_id: id,
-      imageUrl,
-      product_name: productName,
+      products,
+      email,
+      phone,
+      city,
+      postalCode,
       name: fullName,
-      total: totalPrice,
-      quantity,
       address,
+      total,
     });
 
     console.log("✅ Transaction created:", transaction);

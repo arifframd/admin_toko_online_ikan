@@ -1,6 +1,6 @@
 "use server";
 
-import { TransactionProps } from ".";
+import { NewCheckoutProps } from ".";
 import { Product } from "./models/products";
 import { Transaction } from "./models/transactions";
 import { connectDB } from "./mongodb";
@@ -58,23 +58,23 @@ export const updateProduct = async (form: FormData, productId: string, imageUrl:
 //   return data.status;
 // };
 
-export const createTransaction = async ({ order_id, imageUrl, product_name, name, quantity, total, address }: TransactionProps) => {
+export const createTransaction = async ({ order_id, products, name, email, phone, address, city, postalCode, total }: NewCheckoutProps) => {
   try {
     await connectDB();
-
-    // tambahkan data transaksi ke db
     const result = await Transaction.create({
       order_id,
-      imageUrl,
-      product_name,
+      products,
       name,
-      quantity,
-      total,
+      email,
+      phone,
       address,
+      city,
+      postalCode,
+      total,
     });
-    console.log("result: ", result);
+    console.log("✅ Saved transaction:", result);
   } catch (err) {
-    console.log("error: ", err);
+    console.log("❌ Error saving transaction:", err);
   }
 };
 

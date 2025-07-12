@@ -10,6 +10,15 @@ const OrderList = () => {
   const [orders, setOrders] = useState<TransactionProps[]>([]);
   const [ordersByMonth, setOrdersByMonth] = useState<{ month: string; orders: TransactionProps[] }[]>([]);
 
+  const handleToggleProcessed = async (id: string, newValue: boolean) => {
+    await fetch(`/api/transactions/${id}/process`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isProcessed: newValue }),
+    });
+
+    // Refresh data (opsional: re-fetch atau update lokal state)
+  };
   // Handle fetching orders and grouping by month
   useEffect(() => {
     const fetchOrders = async () => {
@@ -61,6 +70,9 @@ const OrderList = () => {
                   <td className="px-6 py-4">{order.address}</td>
                   <td className="px-6 py-4">{order.quantity}</td>
                   <td className="px-6 py-4">{order.total}</td>
+                  <td className="px-6 py-4">
+                    <input type="checkbox" checked={order.isProcessed} onChange={() => handleToggleProcessed(order._id, !order.isProcessed)} />
+                  </td>
                 </tr>
               ))
             ) : (

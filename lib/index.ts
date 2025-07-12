@@ -16,11 +16,32 @@ export interface Product {
 }
 
 export interface TransactionProps {
+  _id: string;
   order_id: string;
   imageUrl: string;
   product_name: string;
   name: string;
   quantity: number;
+  total: number;
+  address: string;
+  isProcessed: boolean;
+}
+
+export interface NewCheckoutProps {
+  order_id: string;
+  products: {
+    product_id: string;
+    product_name: string;
+    imageUrl: string;
+    quantity: number;
+    price: number;
+    subtotal: number;
+  };
+  name: string;
+  email: string;
+  phone: number;
+  city: string;
+  postalCode: number;
   total: number;
   address: string;
 }
