@@ -18,8 +18,13 @@ const OrderList = () => {
     });
 
     // Refresh data (opsional: re-fetch atau update lokal state)
+    const ordersByMonth = await orderByMonth();
+    setOrdersByMonth(ordersByMonth);
+
+    const orders = await getAllOrders();
+    setOrders(orders || []);
   };
-  // Handle fetching orders and grouping by month
+
   useEffect(() => {
     const fetchOrders = async () => {
       const ordersByMonth = await orderByMonth();
@@ -58,6 +63,7 @@ const OrderList = () => {
               <th className="px-6 py-3 font-semibold text-gray-700">Alamat</th>
               <th className="px-6 py-3 font-semibold text-gray-700">Jumlah</th>
               <th className="px-6 py-3 font-semibold text-gray-700">Total</th>
+              <th className="px-6 py-3 font-semibold text-gray-700">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -65,10 +71,28 @@ const OrderList = () => {
               filteredOrders.map((order, i) => (
                 <tr key={i} className="border-t hover:bg-gray-50">
                   <td className="px-6 py-4">{order.order_id}</td>
-                  <td className="px-6 py-4">{order.product_name}</td>
+
+                  {/* Produk */}
+                  <td className="px-6 py-4">
+                    {order.products.map((p, idx) => (
+                      <div key={idx} className="mb-1">
+                        - {p.product_name}
+                      </div>
+                    ))}
+                  </td>
+
                   <td className="px-6 py-4">{order.name}</td>
                   <td className="px-6 py-4">{order.address}</td>
-                  <td className="px-6 py-4">{order.quantity}</td>
+
+                  {/* Jumlah (qty) */}
+                  <td className="px-6 py-4">
+                    {order.products.map((p, idx) => (
+                      <div key={idx} className="mb-1">
+                        {p.quantity} pcs
+                      </div>
+                    ))}
+                  </td>
+
                   <td className="px-6 py-4">{order.total}</td>
                   <td className="px-6 py-4">
                     <input type="checkbox" checked={order.isProcessed} onChange={() => handleToggleProcessed(order._id, !order.isProcessed)} />

@@ -18,10 +18,15 @@ export interface Product {
 export interface TransactionProps {
   _id: string;
   order_id: string;
-  imageUrl: string;
-  product_name: string;
+  products: {
+    product_id: string;
+    product_name: string;
+    imageUrl: string;
+    quantity: number;
+    price: number;
+    subtotal: number;
+  };
   name: string;
-  quantity: number;
   total: number;
   address: string;
   isProcessed: boolean;
