@@ -4,7 +4,7 @@ import { z } from "zod";
 export const createProductValidation = z.object({
   name: z.string().min(3).max(50),
   price: z.number().min(1000),
-  description: z.string().min(10).max(250),
+  description: z.string().min(10).max(1000),
   category: z.string().min(3).max(50),
   link: z.instanceof(File).refine((file) => ["image/jpeg", "image/png", "image/jpg"].includes(file.type), {
     message: "Hanya gambar JPG, JPEG, atau PNG yang diperbolehkan",
@@ -16,7 +16,7 @@ export const createProductValidation = z.object({
 export const editProductValidation = z.object({
   name: z.string().min(3).max(50),
   price: z.number().min(1000),
-  description: z.string().min(10).max(250),
+  description: z.string().min(10).max(1000),
   category: z.string().min(3).max(50),
   link: z
     .instanceof(File)

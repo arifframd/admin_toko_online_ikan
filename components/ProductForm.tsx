@@ -124,7 +124,7 @@ const ProductForm = ({ mode = "add", initialData }: { mode?: "add" | "edit"; ini
             <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
               Kategori / Jenis Produk
             </label>
-            <Input id="category" name="category" placeholder="Contoh: Ban Mobil, Oli Mesin" required defaultValue={initialData?.category || ""} />
+            <Input id="category" name="category" placeholder="Ikan, Filter, Pakan..." required defaultValue={initialData?.category || ""} />
             {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category}</p>}
           </div>
 

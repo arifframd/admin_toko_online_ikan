@@ -7,7 +7,7 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN!;
 export const GET = async () => {
   await connectDB();
   try {
-    const bestSellerProducts = await Product.find({ category: "Komplit" }).sort({ createdAt: -1 }).limit(4);
+    const bestSellerProducts = await Product.find({ category: "Ikan" }).sort({ createdAt: -1 }).limit(4);
     if (!bestSellerProducts || bestSellerProducts.length === 0) {
       return NextResponse.json(
         {
