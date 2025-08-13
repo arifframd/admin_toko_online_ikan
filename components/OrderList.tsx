@@ -17,7 +17,6 @@ const OrderList = () => {
       body: JSON.stringify({ isProcessed: newValue }),
     });
 
-    // Refresh data (opsional: re-fetch atau update lokal state)
     const ordersByMonth = await orderByMonth();
     setOrdersByMonth(ordersByMonth);
 
@@ -28,11 +27,9 @@ const OrderList = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       const ordersByMonth = await orderByMonth();
-      console.log("Grouped orders by month:", ordersByMonth);
       setOrdersByMonth(ordersByMonth);
 
       const orders = await getAllOrders();
-      console.log("All orders:", orders);
       setOrders(orders || []);
     };
     fetchOrders();
@@ -45,35 +42,44 @@ const OrderList = () => {
   const filteredOrders = selectedCategory === "Semua" ? orders : ordersByMonth.find((order) => order.month === selectedCategory)?.orders || [];
 
   return (
-    <div className="p-6">
-      <div className="overflow-x-auto rounded-lg shadow">
-        <h1 className="text-2xl font-semibold mb-4">Daftar Order</h1>
-        <div className="mb-6 flex justify-end lg:mx-9 gap-5">
-          <Button onClick={handlePrint}>Cetak PDF</Button>
-          <h1 className="text-[18px] text-gray-600 font-semibold mr-4">Bulan: </h1>
-          <Category selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-        </div>
+    <div className="overflow-x-auto rounded-lg shadow p-4 sm:p-6">
+      <h1 className="text-2xl font-semibold mb-4">Daftar Order</h1>
 
+      {/* Filter dan Tombol Cetak */}
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <Button onClick={handlePrint} className="w-full sm:w-auto">
+            Cetak PDF
+          </Button>
+          <div className="flex items-center gap-2">
+            <h1 className="text-[16px] sm:text-[18px] text-gray-600 font-semibold">Bulan:</h1>
+            <Category selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+          </div>
+        </div>
+      </div>
+
+      {/* Tabel */}
+      <div className="overflow-x-auto rounded-lg shadow">
         <table className="min-w-full text-sm text-left border border-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-6 py-3 font-semibold text-gray-700">Order Id</th>
-              <th className="px-6 py-3 font-semibold text-gray-700">Produk</th>
-              <th className="px-6 py-3 font-semibold text-gray-700">Nama</th>
-              <th className="px-6 py-3 font-semibold text-gray-700">Alamat</th>
-              <th className="px-6 py-3 font-semibold text-gray-700">Jumlah</th>
-              <th className="px-6 py-3 font-semibold text-gray-700">Total</th>
-              <th className="px-6 py-3 font-semibold text-gray-700">Status</th>
+              <th className="px-4 sm:px-6 py-3 font-semibold text-gray-700">Order Id</th>
+              <th className="px-4 sm:px-6 py-3 font-semibold text-gray-700">Produk</th>
+              <th className="px-4 sm:px-6 py-3 font-semibold text-gray-700">Nama</th>
+              <th className="px-4 sm:px-6 py-3 font-semibold text-gray-700">Alamat</th>
+              <th className="px-4 sm:px-6 py-3 font-semibold text-gray-700">Jumlah</th>
+              <th className="px-4 sm:px-6 py-3 font-semibold text-gray-700">Total</th>
+              <th className="px-4 sm:px-6 py-3 font-semibold text-gray-700">Status</th>
             </tr>
           </thead>
           <tbody>
             {filteredOrders.length > 0 ? (
               filteredOrders.map((order, i) => (
                 <tr key={i} className="border-t hover:bg-gray-50">
-                  <td className="px-6 py-4">{order.order_id}</td>
+                  <td className="px-4 sm:px-6 py-4">{order.order_id}</td>
 
                   {/* Produk */}
-                  <td className="px-6 py-4">
+                  <td className="px-4 sm:px-6 py-4">
                     {order.products.map((p, idx) => (
                       <div key={idx} className="mb-1">
                         - {p.product_name}
@@ -81,11 +87,11 @@ const OrderList = () => {
                     ))}
                   </td>
 
-                  <td className="px-6 py-4">{order.name}</td>
-                  <td className="px-6 py-4">{order.address}</td>
+                  <td className="px-4 sm:px-6 py-4">{order.name}</td>
+                  <td className="px-4 sm:px-6 py-4">{order.address}</td>
 
                   {/* Jumlah (qty) */}
-                  <td className="px-6 py-4">
+                  <td className="px-4 sm:px-6 py-4">
                     {order.products.map((p, idx) => (
                       <div key={idx} className="mb-1">
                         {p.quantity} pcs
@@ -93,15 +99,15 @@ const OrderList = () => {
                     ))}
                   </td>
 
-                  <td className="px-6 py-4">{order.total}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 sm:px-6 py-4">{order.total}</td>
+                  <td className="px-4 sm:px-6 py-4">
                     <input type="checkbox" checked={order.isProcessed} onChange={() => handleToggleProcessed(order._id, !order.isProcessed)} />
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td className="px-6 py-4" colSpan={3}>
+                <td className="px-4 sm:px-6 py-4" colSpan={7}>
                   Tidak ada data Order
                 </td>
               </tr>

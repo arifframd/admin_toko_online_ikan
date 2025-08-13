@@ -17,9 +17,9 @@ const ProductList = ({ products }: { products: Product[] }) => {
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Daftar Produk</h2>
-      <div className="overflow-x-auto rounded-lg shadow">
+    <div className="md:p-6 p-2">
+      <h2 className="md:text-2xl text-1xl font-bold mb-4">Daftar Produk</h2>
+      <div className="overflow-x-auto overflow-y-auto rounded-lg shadow">
         <table className="min-w-full text-sm text-left border border-gray-200">
           <thead className="bg-gray-100">
             <tr>
@@ -37,7 +37,7 @@ const ProductList = ({ products }: { products: Product[] }) => {
               productList.map((product) => (
                 <tr key={product._id} className="border-t hover:bg-gray-50">
                   <td className="px-6 py-4">{product.name}</td>
-                  <td className="px-6 py-4">{product.description}</td>
+                  <td className="px-6 py-4 line-clamp-3">{product.description}</td>
                   <td className="px-6 py-4">{product.price}</td>
                   <td className="px-6 py-4">{product.category}</td>
                   <td className="px-6 py-4">{product.stock}</td>

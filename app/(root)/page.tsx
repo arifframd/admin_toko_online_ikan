@@ -24,6 +24,7 @@ export default async function Home() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-5 py-3">
       <h2 className="text-2xl font-semibold mb-4">Statistik</h2>
       <div className="bg-muted rounded-xl p-6 shadow-sm">
+        {/* Chart selalu 1 kolom */}
         <ChartDashboard />
       </div>
 

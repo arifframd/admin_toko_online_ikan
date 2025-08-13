@@ -5,15 +5,15 @@ const UserList = async () => {
   const users = await userFetch();
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Daftar Pengguna</h2>
-      <div className="overflow-x-auto rounded-lg shadow">
+    <div className="md:p-6 p-2">
+      <h2 className="md:text-2xl text-1xl font-bold mb-4">Daftar User</h2>
+      <div className="overflow-x-auto overflow-y-auto rounded-lg shadow">
         <table className="min-w-full text-sm text-left border border-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-6 py-3 font-semibold text-gray-700">Nama</th>
-              <th className="px-6 py-3 font-semibold text-gray-700">Email</th>
-              <th className="px-6 py-3 font-semibold text-gray-700">Role</th>
+              <th className="px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">Nama</th>
+              <th className="px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">Email</th>
+              <th className="px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">Role</th>
             </tr>
           </thead>
           <tbody>

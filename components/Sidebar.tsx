@@ -1,6 +1,8 @@
 import Link from "next/link";
-import { Home, Package, Users, Book, Pen } from "lucide-react";
+import { Home, Package, Users, Book, Pen, LogOut } from "lucide-react";
 import SignOut from "./SignOut";
+import { Button } from "./ui/button";
+import { signOutAction } from "@/lib/signout";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: Home },
@@ -20,7 +22,11 @@ export default function Sidebar() {
             <Icon size={18} /> <span>{label}</span>
           </Link>
         ))}
-        <SignOut />
+        <form action={signOutAction}>
+          <Button className="bg-red-100 flex items-center gap-3 p-2 rounded-md hover:bg-red-100 text-red-500 mt-10">
+            <LogOut size={18} /> Logout
+          </Button>
+        </form>
       </nav>
     </aside>
   );
