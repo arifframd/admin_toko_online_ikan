@@ -25,7 +25,7 @@ export interface TransactionProps {
     quantity: number;
     price: number;
     subtotal: number;
-  };
+  }[];
   name: string;
   total: number;
   address: string;

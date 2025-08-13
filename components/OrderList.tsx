@@ -80,7 +80,7 @@ const OrderList = () => {
 
                   {/* Produk */}
                   <td className="px-4 sm:px-6 py-4">
-                    {order.products.map((p, idx) => (
+                    {(order.products || []).map((p, idx) => (
                       <div key={idx} className="mb-1">
                         - {p.product_name}
                       </div>
@@ -92,7 +92,7 @@ const OrderList = () => {
 
                   {/* Jumlah (qty) */}
                   <td className="px-4 sm:px-6 py-4">
-                    {order.products.map((p, idx) => (
+                    {(order.products || []).map((p, idx) => (
                       <div key={idx} className="mb-1">
                         {p.quantity} pcs
                       </div>
